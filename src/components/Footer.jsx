@@ -9,6 +9,7 @@ function Footer({
   previousButtonHandler,
   backToHomePage,
   finish,
+  buttonDeactive,
 }) {
   return (
     <div className="footer-main">
@@ -32,6 +33,7 @@ function Footer({
           variant="contained"
           className="next-btn"
           onClick={nextButtonHandler}
+          disabled={buttonDeactive}
         >
           {finish ? "Finish" : "Next Step"}
           {finish ? "" : <ArrowRightAltIcon />}

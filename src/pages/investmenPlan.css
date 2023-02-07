@@ -10,6 +10,7 @@
 h2 {
   font-family: "Montserrat Alternates";
   text-align: left;
+  margin-top: 100px;
 }
 p {
   text-align: left;
@@ -29,6 +30,7 @@ h4 {
 
 .form-control {
   display: flex !important;
+  margin-bottom: 150px !important;
 }
 .radio-group {
   display: flex !important;
@@ -37,6 +39,8 @@ h4 {
 
 .slider {
   color: #35a0ee;
+  margin-top: 30px !important;
+  margin-bottom: 50px !important;
 }
 
 .slider:hover {

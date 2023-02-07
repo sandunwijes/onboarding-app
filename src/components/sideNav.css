@@ -7,11 +7,11 @@
 }
 .logo-text {
   text-align: left;
-  margin-top: 20px !important;
+  margin-top: -70px !important;
 }
 
 .logo-text {
-  color: white;
+  color: white !important;
   font-weight: bold !important;
 }
 .nav-stepper {

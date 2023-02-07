@@ -21,24 +21,43 @@ import store from "../State/store";
 
 import "./investmenPlan.css";
 
-const formControlStyle = {
-  borderStyle: "solid",
-  borderWidth: "0.8px",
-  paddingRight: "20px",
-  paddingLeft: "10px",
-
-  borderRadius: "5px",
-};
-
 function InvestmentPlans() {
+  const calPercentage = (value) => {
+    if (value >= 500000) {
+      return 100;
+    } else if (value >= 200000) {
+      return 80;
+    } else if (value >= 100000) {
+      return 60;
+    } else if (value >= 50000) {
+      return 40;
+    } else if (value >= 10000) {
+      return 20;
+    } else {
+      return 0;
+    }
+  };
+
   const state = useSelector((state) => state.userState.step2);
   const navigate = useNavigate();
   const [startValue, setStartValue] = useState(state.startValue);
   const [endValue, setEndValue] = useState(state.endValue);
 
-  const [value, setValue] = useState([]);
   const [isInvestor, setIsInvestor] = useState(false);
 
+  const [value, setValue] = useState([
+    calPercentage(state.startValue),
+    calPercentage(state.endValue),
+  ]);
+  const formControlStyle = {
+    borderStyle: "solid",
+    borderWidth: "0.8px",
+    paddingRight: "20px",
+    paddingLeft: "10px",
+    borderColor: isInvestor ? "#35A0EE" : "#D5D9DC",
+    borderRadius: "5px",
+    color: isInvestor ? "#35A0EE" : "#D5D9DC",
+  };
   const marks = [
     {
       value: 0,
@@ -66,7 +85,7 @@ function InvestmentPlans() {
     },
   ];
 
-  const slideChangeHandler = (value) => {
+  const slideChangeHandler = (e, value) => {
     let firstValue = value[0];
     let secondValue = value[1];
 
@@ -93,6 +112,30 @@ function InvestmentPlans() {
     } else {
       return 10000;
     }
+  };
+
+  const calBothValues = (start, end) => {
+    let valueToStart = calPercentage(start);
+    let valueToEnd = calPercentage(end);
+    valueToStart = Math.round(valueToStart / 20) * 20;
+    valueToEnd = Math.round(valueToEnd / 20) * 20;
+    setValue([valueToStart, valueToEnd]);
+  };
+
+  const handleStartInput = () => {
+    if (startValue > endValue) {
+      setStartValue(0);
+      calBothValues(0, endValue);
+    }
+    calBothValues(startValue, endValue);
+  };
+
+  const handleEndInput = () => {
+    if (startValue > endValue) {
+      setEndValue(1000000);
+      calBothValues(startValue, 1000000);
+    }
+    calBothValues(startValue, endValue);
   };
 
   const saveDataToState = () => {
@@ -136,6 +179,7 @@ function InvestmentPlans() {
                 }
                 onChange={(e) => setStartValue(e.target.value)}
                 value={startValue}
+                onBlur={handleStartInput}
               />
             </FormControl>
 
@@ -148,6 +192,7 @@ function InvestmentPlans() {
                 }
                 onChange={(event) => setEndValue(event.target.value)}
                 value={endValue}
+                onBlur={handleEndInput}
               />
             </FormControl>
           </FormGroup>

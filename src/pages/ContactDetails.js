@@ -1,11 +1,16 @@
 import { MenuItem, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { submitStep2 } from "../State/State";
 import store from "../State/store";
+import {
+  validateEmail,
+  validateName,
+  validatePhone,
+} from "../validation/validation";
 import "./contactDetails.css";
 
 const countryOptions = [
@@ -26,10 +31,73 @@ const countryOptions = [
 function ContactDetails() {
   const state = useSelector((state) => state.userState.step1);
   const navigate = useNavigate();
+
   const [fullName, setFullName] = useState(state.fullName);
   const [phone, setPhone] = useState(state.telephone);
   const [email, setEmail] = useState(state.email);
   const [country, setCountry] = useState("United States");
+
+  const [phoneError, setPhoneError] = useState(false);
+  const [phoenHelperText, setPhoneHelperText] = useState(" ");
+
+  const [emailError, setEmailError] = useState(false);
+  const [emailHelperText, setEmailHelperText] = useState(" ");
+
+  const [fullNameError, setFullNameError] = useState(false);
+  const [fullNameHelperText, setFullNameHelperText] = useState(" ");
+  const [buttonDeactive, setButtonDeactive] = useState(true);
+
+  useEffect(() => {
+    let blankFields = fullName === "" || phone === "" || email === "";
+    let error = emailError || phoneError || fullNameError;
+
+    if (!blankFields && !error) {
+      setButtonDeactive(false);
+    } else {
+      setButtonDeactive(true);
+    }
+  }, [emailError, phoneError, fullNameError, fullName, phone, email]);
+
+  //Form Validation
+  const validateInputs = (inputData) => {
+    switch (inputData) {
+      case "fullName": {
+        const result = validateName(fullName);
+        if (result.error) {
+          setFullNameError(true);
+          setFullNameHelperText(result.error.details[0].message);
+        } else {
+          setFullNameError(false);
+          setFullNameHelperText(" ");
+        }
+        break;
+      }
+      case "phone": {
+        const result = validatePhone(phone);
+        if (result.error) {
+          setPhoneError(true);
+          setPhoneHelperText(result.error.details[0].message);
+        } else {
+          setPhoneError(false);
+          setPhoneHelperText(" ");
+        }
+        break;
+      }
+      case "email": {
+        const result = validateEmail(email);
+        if (result.error) {
+          setEmailError(true);
+          setEmailHelperText(result.error.details[0].message);
+        } else {
+          setEmailError(false);
+          setEmailHelperText(" ");
+        }
+        break;
+      }
+      default: {
+      }
+    }
+  };
 
   const nextButtonHandler = () => {
     let obj = {
@@ -69,9 +137,12 @@ function ContactDetails() {
               size="small"
               variant="standard"
               value={fullName}
+              error={fullNameError}
               onChange={(e) => {
                 setFullName(e.target.value);
               }}
+              helperText={fullNameHelperText}
+              onBlur={() => validateInputs("fullName")}
             ></TextField>
             <TextField
               label="Phone"
@@ -79,10 +150,13 @@ function ContactDetails() {
               type="number"
               fullWidth
               variant="standard"
+              error={phoneError}
               value={phone}
               onChange={(e) => {
                 setPhone(e.target.value);
               }}
+              helperText={phoenHelperText}
+              onBlur={() => validateInputs("phone")}
             ></TextField>
           </div>
           <div className="form-email">
@@ -92,10 +166,13 @@ function ContactDetails() {
               fullWidth
               size="small"
               variant="standard"
+              error={emailError}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
+              helperText={emailHelperText}
+              onBlur={() => validateInputs("email")}
             ></TextField>
           </div>
           <div className="form-country">
@@ -135,6 +212,7 @@ function ContactDetails() {
         nextButtonHandler={nextButtonHandler}
         previousButtonHandler={previousButtonHandler}
         backToHomePage={true}
+        buttonDeactive={buttonDeactive}
       />
     </div>
   );

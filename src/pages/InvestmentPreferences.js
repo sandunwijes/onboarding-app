@@ -5,14 +5,19 @@ import {
   Checkbox,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { submitFinishStep } from "../State/State";
+import store from "../State/store";
 import "./investmentPreferences.css";
 
 function InvestmentPreferences() {
   const navigate = useNavigate();
+  const state = useSelector((state) => state.userState.step3);
+  const [markedCards, setMarkedCards] = useState(new Set(state.preferences));
   const cardInfo = [
     { id: "1", value: "Single family" },
     { id: "2", value: "Residential multifamily" },
@@ -23,9 +28,18 @@ function InvestmentPreferences() {
     { id: "7", value: "Commercial Office" },
     { id: "8", value: "Other" },
   ];
+
+  const saveDataToState = () => {
+    let obj = {
+      preferences: Array.from(markedCards),
+    };
+    store.dispatch(submitFinishStep({ data: obj }));
+  };
+
   const nextButtonHandler = () => {};
 
   const previousButtonHandler = () => {
+    saveDataToState();
     navigate("/page/2");
   };
 
@@ -45,8 +59,23 @@ function InvestmentPreferences() {
             <h3>What kind of real estate are you interested in?</h3>
             <div className="card-container">
               {cardInfo.map(({ id, value }) => {
+                const selectedCard = markedCards.has(id);
                 return (
-                  <Card variant="outlined" key={id} className="card-selected">
+                  <Card
+                    variant="outlined"
+                    key={id}
+                    className="card-items"
+                    onClick={() => {
+                      let cardItems = new Set(markedCards);
+                      if (selectedCard) {
+                        cardItems.delete(id);
+                        setMarkedCards(cardItems);
+                      } else {
+                        cardItems.add(id);
+                        setMarkedCards(cardItems);
+                      }
+                    }}
+                  >
                     <CardContent id="checkbox">
                       <Typography
                         sx={{ fontSize: 14 }}
