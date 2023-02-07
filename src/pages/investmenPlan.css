@@ -1,0 +1,48 @@
+.main-container-step2 {
+  padding-left: 15%;
+  padding-right: 15%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+h2 {
+  font-family: "Montserrat Alternates";
+  text-align: left;
+}
+p {
+  text-align: left;
+  color: rgba(8, 8, 8, 40%);
+}
+h4 {
+  text-align: left;
+}
+.form-group {
+  display: flex !important ;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  flex-wrap: nowrap !important;
+  gap: 2% !important;
+}
+
+.form-control {
+  display: flex !important;
+}
+.radio-group {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.slider {
+  color: #35a0ee;
+}
+
+.slider:hover {
+  color: #35a0ee;
+}
+
+.slider .MuiSlider-thumb {
+  border-radius: 1px;
+}
