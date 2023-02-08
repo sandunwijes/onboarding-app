@@ -8,6 +8,7 @@
 .logo-text {
   text-align: left;
   margin-top: -70px !important;
+  font-size: x-large !important;
 }
 
 .logo-text {
@@ -25,7 +26,7 @@
   font-family: "Montserrat Alternates", sans-serif !important;
 }
 .nav-description {
-  margin-top: 10%;
+  margin-top: 45%;
   position: relative;
 }
 .card-content {

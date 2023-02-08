@@ -12,7 +12,13 @@ import {
   validatePhone,
 } from "../validation/validation";
 import "./contactDetails.css";
-
+const textFieldStyles = {
+  textField: { marginBottom: "10px" },
+  input: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+};
 const countryOptions = [
   {
     value: "Ukraine",
@@ -25,6 +31,14 @@ const countryOptions = [
   {
     value: "Sri Lanka",
     label: "Sri Lanka",
+  },
+  {
+    value: "India",
+    label: "India",
+  },
+  {
+    value: "Singapore",
+    label: "Singapore",
   },
 ];
 
@@ -143,6 +157,12 @@ function ContactDetails() {
               }}
               helperText={fullNameHelperText}
               onBlur={() => validateInputs("fullName")}
+              InputLabelProps={{
+                classes: {
+                  root: textFieldStyles.input,
+                },
+              }}
+              style={textFieldStyles.textField}
             ></TextField>
             <TextField
               label="Phone"
@@ -157,6 +177,12 @@ function ContactDetails() {
               }}
               helperText={phoenHelperText}
               onBlur={() => validateInputs("phone")}
+              InputLabelProps={{
+                classes: {
+                  root: textFieldStyles.input,
+                },
+              }}
+              style={textFieldStyles.textField}
             ></TextField>
           </div>
           <div className="form-email">
@@ -173,6 +199,12 @@ function ContactDetails() {
               }}
               helperText={emailHelperText}
               onBlur={() => validateInputs("email")}
+              InputLabelProps={{
+                classes: {
+                  root: textFieldStyles.input,
+                },
+              }}
+              style={textFieldStyles.textField}
             ></TextField>
           </div>
           <div className="form-country">
@@ -186,6 +218,12 @@ function ContactDetails() {
                 setCountry(e.target.value);
               }}
               value={country}
+              InputLabelProps={{
+                classes: {
+                  root: textFieldStyles.input,
+                },
+              }}
+              style={textFieldStyles.textField}
             >
               {countryOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
